@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SPBU-practice.PictureViewer.iml" filepath="$PROJECT_DIR$/.idea/modules/SPBU-practice.PictureViewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SPBU-practice.PictureViewer_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SPBU-practice.PictureViewer_main.iml" group="SPBU-practice.PictureViewer" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SPBU-practice.PictureViewer_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SPBU-practice.PictureViewer_test.iml" group="SPBU-practice.PictureViewer" />
+    </modules>
+  </component>
+</project>
