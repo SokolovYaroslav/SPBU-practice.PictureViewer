@@ -52,10 +52,8 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
 
         val subList = source.subList(startIndex, startIndex + byteAmount).reversed()
         var value: Int = 0
-        for (byte in subList) {
-            val byteInInt: Int = if (signed) byte.toInt() else byteToUnsignedInt(byte)
-            value = (value shl 8) + byteInInt
-        }
+        subList.asSequence().map { if (signed) it.toInt() else byteToUnsignedInt(it) }
+                .forEach { value = (value shl 8) + it }
         return value
     }
 
@@ -72,7 +70,7 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
     private fun parseTable(): Array<Int>? {
         val table: Array<Int>?
         if (rawTable != null) {
-            table = Array<Int>(rawTable.size / 4, {0})
+            table = Array(rawTable.size / 4, {0})
             for (i in 0..rawTable.size - 1 step 4) {
                 table[i / 4] = parseBGRA(i, rawTable)
             }
@@ -85,7 +83,7 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
 
     //Classic vizualization
     private fun parseData(): Array<Int> {
-        val data = Array<Int>(width * height, {0})
+        val data = Array(width * height, {0})
         val alignment = (4 - ((width * bitsPerPixel / 8) % 4)) % 4
         when (bitsPerPixel) {
             24 -> {

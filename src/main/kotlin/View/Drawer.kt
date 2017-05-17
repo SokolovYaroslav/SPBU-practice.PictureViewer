@@ -1,9 +1,6 @@
 package View
 
 import Model.ImageMaker
-import java.awt.BufferCapabilities
-import java.awt.Frame
-import java.awt.image.BufferedImage
 import javax.swing.JFrame
 
 /**

@@ -14,7 +14,7 @@ interface ImageMaker {
     var height: Int
 
     @Throws(IllegalArgumentException::class)
-    public fun makeImage(byteList: List<Byte>)
+    fun makeImage(byteList: List<Byte>)
 
-    public fun addObserver(o: Observer)
+    fun addObserver(o: Observer)
 }

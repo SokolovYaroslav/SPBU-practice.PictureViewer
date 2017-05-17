@@ -8,7 +8,7 @@ import javax.swing.JFrame
 /**
 * Created by Yaroslav Sokolov on 25.04.17.
 */
-class Viewer() : Observer {
+class Viewer : Observer {
 
 	private val controller = Controller(this)
 	private val frame = JFrame()

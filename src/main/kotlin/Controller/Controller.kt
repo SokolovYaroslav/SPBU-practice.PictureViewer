@@ -15,7 +15,7 @@ class Controller(private val viewer: Viewer) {
 
 	private lateinit var model: ImageMaker
 
-	public fun openFile(filePath: String) {
+	fun openFile(filePath: String) {
 //        if (filePath.split(".").size != 2) {
 //            println("Invalid file extension")
 //        }
