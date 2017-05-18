@@ -22,7 +22,6 @@ internal class BMPMakerTest {
             "haker_24bit",
             "hm_8bit",
             "led_32bit",
-//            "lena512",
             "love_24bit",
             "man",
             "ogon_24bit",

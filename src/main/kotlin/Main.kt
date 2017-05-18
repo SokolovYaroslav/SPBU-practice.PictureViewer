@@ -6,8 +6,8 @@ import View.Viewer
 fun main(args: Array<String>) {
     val viewer = Viewer()
 
-    if (args.size != 1) {
-        println("Invalid amount of args")
-    }
-    viewer.drawImage(args[0])
+//    if (args.size != 1) {
+//        println("Invalid amount of args")
+//    }
+    viewer.drawImage("./src/pictures/bmp/dodj_24bit.bmp")
 }
