@@ -13,15 +13,19 @@ import java.nio.file.Paths
 */
 class Controller(private val viewer: Viewer) {
 
-	private lateinit var model: ImageMaker
+	private var model: ImageMaker = BMPMaker()
 
 	fun openFile(filePath: String) {
 //        if (filePath.split(".").size != 2) {
 //            println("Invalid file extension")
 //        }
-
+        val fileName = filePath.split("/").last()
         when (filePath.split(".").last()) {
-            "bmp" -> model = BMPMaker(filePath.split("/").last())
+            "bmp" -> {
+                if (!(model is BMPMaker)) {
+                    model = BMPMaker()
+                }
+            }
             else -> {
                 println("Illegal file extension")
                 return
@@ -29,11 +33,12 @@ class Controller(private val viewer: Viewer) {
             }
         }
 
+        model.fileName = fileName
         val path: Path
-        val byteList: List<Byte>
+        val byteArray: ByteArray
         try {
             path = Paths.get(filePath)
-            byteList = Files.readAllBytes(path).toList()
+            byteArray = Files.readAllBytes(path)
         }
         catch (e: NoSuchFileException) {
             println("No such file")
@@ -42,7 +47,7 @@ class Controller(private val viewer: Viewer) {
 
 		model.addObserver(viewer)
         try {
-            model.makeImage(byteList)
+            model.makeImage(byteArray)
         }
         catch (e: IllegalArgumentException) {
             println(e.message)

@@ -6,8 +6,9 @@ import java.util.*
 /**
 * Created by Yaroslav Sokolov on 26.04.17.
 */
-class BMPMaker(override val fileName: String) : ImageMaker, Observable()  {
+class BMPMaker : ImageMaker, Observable()  {
 
+    override var fileName: String = "SampleImage"
     override lateinit var image: BufferedImage
     override var width = 0
     override var height = 0
@@ -15,12 +16,12 @@ class BMPMaker(override val fileName: String) : ImageMaker, Observable()  {
     private lateinit var BMPInfo: BitMapInfoBMP
 
     @Throws(IllegalArgumentException::class)
-    override fun makeImage(byteList: List<Byte>) {
-        if (!(byteList[0].toChar() == 'B' && byteList[1].toChar() == 'M')) {
+    override fun makeImage(byteArray: ByteArray) {
+        if (!(byteArray[0].toChar() == 'B' && byteArray[1].toChar() == 'M')) {
             throw IllegalArgumentException("Illegal actual format")
         }
 
-        BMPInfo = BitMapInfoBMP(byteList)
+        BMPInfo = BitMapInfoBMP(byteArray)
 
         getImage()
         width = BMPInfo.width

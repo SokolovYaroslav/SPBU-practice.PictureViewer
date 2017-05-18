@@ -8,13 +8,13 @@ import java.util.*
 */
 interface ImageMaker {
 
-    val fileName: String
+    var fileName: String
     var image: BufferedImage
     var width: Int
     var height: Int
 
     @Throws(IllegalArgumentException::class)
-    fun makeImage(byteList: List<Byte>)
+    fun makeImage(byteArray: ByteArray)
 
     fun addObserver(o: Observer)
 }

@@ -3,7 +3,7 @@ package Model
 /**
 * Created by Yaroslav Sokolov on 28.04.17.
 */
-data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay: Int = 1) {
+data class BitMapInfoBMP(private val byteArray: ByteArray, val vizualizationWay: Int = 1) {
 
     internal val version: Int
     internal val width: Int
@@ -17,26 +17,26 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
     private val table: Array<Int>?
 
     init {
-        val dataStart = bytesToInt(0x0a, 4, byteList)
-        rawData = byteList.subList(dataStart, byteList.size).toByteArray()
-        version = bytesToInt(0x0E, 4, byteList)
+        val dataStart = bytesToInt(0x0a, 4, byteArray)
+        rawData = byteArray.sliceArray(dataStart..byteArray.size - 1)
+        version = bytesToInt(0x0E, 4, byteArray)
         when (version) {
             12 -> {
-                width = bytesToInt(0x12, 2, byteList)
-                height = bytesToInt(0x14, 2, byteList)
-                bitsPerPixel = bytesToInt(0x18, 2, byteList)
+                width = bytesToInt(0x12, 2, byteArray)
+                height = bytesToInt(0x14, 2, byteArray)
+                bitsPerPixel = bytesToInt(0x18, 2, byteArray)
             }
             40, 108, 124 -> {
-                width = bytesToInt(0x12, 4, byteList)
-                height = bytesToInt(0x16, 4, byteList)
-                bitsPerPixel = bytesToInt(0x1C, 2, byteList)
+                width = bytesToInt(0x12, 4, byteArray)
+                height = bytesToInt(0x16, 4, byteArray)
+                bitsPerPixel = bytesToInt(0x1C, 2, byteArray)
 //                TODO("Realize usage of specific fields")
             }
             else -> throw IllegalArgumentException("Something went wrong")
         }
 
         rawTable = if (bitsPerPixel <= 8) {
-            byteList.subList(version + 0X0E, dataStart).toByteArray()
+            byteArray.sliceArray(version + 0X0E..dataStart - 1)
         }
         else null
 
@@ -47,13 +47,14 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
         else TODO("Realize some other ways of vizualization")
     }
 
-    private fun bytesToInt(startIndex: Int, byteAmount: Int,
-                           source: List<Byte>, signed: Boolean = false): Int {
+    private fun bytesToInt(startIndex: Int, byteAmount: Int, source: ByteArray): Int {
 
-        val subList = source.subList(startIndex, startIndex + byteAmount).reversed()
         var value: Int = 0
-        subList.asSequence().map { if (signed) it.toInt() else byteToUnsignedInt(it) }
-                .forEach { value = (value shl 8) + it }
+
+        for (i in startIndex + byteAmount - 1 downTo startIndex) {
+            val byte = byteToUnsignedInt(source[i])
+            value = (value shl 8) + byte
+        }
         return value
     }
 
@@ -66,13 +67,12 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
         }
     }
 
-    //Classic vizualization
     private fun parseTable(): Array<Int>? {
         val table: Array<Int>?
         if (rawTable != null) {
             table = Array(rawTable.size / 4, {0})
             for (i in 0..rawTable.size - 1 step 4) {
-                table[i / 4] = parseBGRA(i, rawTable)
+                table[i / 4] = bytesToInt(i, 4, rawTable)
             }
         }
         else {
@@ -90,12 +90,7 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
                 for (i in 0..height - 1) {
                     for (j in 0..width - 1) {
                         val index = (i * (3 * width + alignment) + 3 * j)
-                        if (index > 2359292) {
-                            println(i)
-                            println(j)
-                            println(index)
-                        }
-                        data[i * width + j] = parseBGR(index, rawData)
+                        data[i * width + j] = bytesToInt(index, 3, rawData)
                     }
                 }
             }
@@ -103,7 +98,7 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
                 for (i in 0..height - 1) {
                     for (j in 0..width - 1) {
                         val index = (i * (4 * width + alignment) + 4 * j)
-                        data[i * width + j] = parseBGRA(index, rawData)
+                        data[i * width + j] = bytesToInt(index, 4, rawData)
                     }
                 }
             }
@@ -118,27 +113,5 @@ data class BitMapInfoBMP(private val byteList: List<Byte>, val vizualizationWay:
             else -> throw IllegalArgumentException("Invalid bits per pixel")
         }
         return data
-    }
-
-    //returns one RGB Int
-    private fun parseBGR(index: Int, source: ByteArray): Int {
-        var pixel = 0
-
-        for (i in index downTo index - 2) {
-            pixel = (pixel shl 8) + source[i + 2]
-        }
-
-        return pixel
-    }
-
-    //returns one ARGB Int
-    private fun parseBGRA(index: Int, source: ByteArray): Int {
-        var pixel = 0
-
-        for (i in index downTo index - 3) {
-            pixel = (pixel shl 8) + source[i + 3]
-        }
-
-        return pixel
     }
 }
