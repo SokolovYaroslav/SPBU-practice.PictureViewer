@@ -8,17 +8,11 @@ import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import java.nio.file.Paths
 
-/**
-* Created by Yaroslav Sokolov on 26.04.17.
-*/
 class Controller(private val viewer: Viewer) {
 
 	private var model: ImageMaker = BMPMaker()
 
 	fun openFile(filePath: String) {
-//        if (filePath.split(".").size != 2) {
-//            println("Invalid file extension")
-//        }
         val fileName = filePath.split("/").last()
         when (filePath.split(".").last()) {
             "bmp" -> {

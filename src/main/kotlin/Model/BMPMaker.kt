@@ -3,9 +3,6 @@ package Model
 import java.awt.image.BufferedImage
 import java.util.*
 
-/**
-* Created by Yaroslav Sokolov on 26.04.17.
-*/
 class BMPMaker : ImageMaker, Observable()  {
 
     override var fileName: String = "SampleImage"

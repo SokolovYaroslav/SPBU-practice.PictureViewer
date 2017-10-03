@@ -1,8 +1,5 @@
 package Model
 
-/**
-* Created by Yaroslav Sokolov on 28.04.17.
-*/
 data class BitMapInfoBMP(private val byteArray: ByteArray, val vizualizationWay: Int = 1) {
 
     internal val version: Int
@@ -11,7 +8,6 @@ data class BitMapInfoBMP(private val byteArray: ByteArray, val vizualizationWay:
     internal val bitsPerPixel: Int
     internal val data: Array<Int>//Array of pixels
 
-//    private val actualHeight: Int
     private val rawData: ByteArray
     private val rawTable: ByteArray?
     private val table: Array<Int>?

@@ -8,9 +8,6 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import javax.imageio.ImageIO.read
 
-/**
-* Created by Yaroslav Sokolov on 17.05.17.
-*/
 internal class BMPMakerTest {
 
     private val pictures = listOf(

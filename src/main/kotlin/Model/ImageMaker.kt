@@ -3,9 +3,6 @@ package Model
 import java.awt.image.BufferedImage
 import java.util.*
 
-/**
-* Created by Yaroslav Sokolov on 25.04.17.
-*/
 interface ImageMaker {
 
     var fileName: String
