@@ -10,9 +10,9 @@ import java.nio.file.Paths
 
 class Controller(private val viewer: Viewer) {
 
-	private var model: ImageMaker = BMPMaker()
+	private var model: ImageMaker = BMPMaker()//actualy needn't to be initialize
 
-	fun openFile(filePath: String) {
+	public fun openFile(filePath: String) {
         val fileName = filePath.split("/").last()
         when (filePath.split(".").last()) {
             "bmp" -> {

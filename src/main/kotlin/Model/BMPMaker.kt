@@ -20,7 +20,7 @@ class BMPMaker : ImageMaker, Observable()  {
 
         BMPInfo = BitMapInfoBMP(byteArray)
 
-        getImage()
+        bytesToPixels()
         width = BMPInfo.width
         height = BMPInfo.height
 
@@ -28,7 +28,7 @@ class BMPMaker : ImageMaker, Observable()  {
         notifyObservers(fileName)
     }
 
-    private fun getImage() {
+    private fun bytesToPixels() {
         image = BufferedImage(BMPInfo.width, BMPInfo.height, 1)
 
         var index = BMPInfo.data.size - 1
